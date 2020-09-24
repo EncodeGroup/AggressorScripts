@@ -1,0 +1,25 @@
+global('$logpath');
+$logpath = "/opt/CS/toolkit/logs/";
+
+if (!-exists $logpath) {
+    mkdir($logpath);
+}
+
+on beacon_output 
+{ 
+    $bd = bdata($1);
+    local('$out');
+    if ("====== AMSIProviders ======" isin $2)
+    {
+        $out = openf(">>" . "$logpath" . "SeatBelt_" . formatDate($3, 'yyyyMMMdd') . "_" . $bd['internal'] . "_" . $bd['computer'] . "_output.log");
+        println($out, "$2" . "\n");
+        closef($out);
+    }
+    if ("Completed collection in" isin $2)
+    {
+
+        $out = openf(">>" . "$logpath" . "SeatBelt_" . formatDate($3, 'yyyyMMMdd') . "_" . $bd['internal'] . "_" . $bd['computer'] . "_output.log");
+        println($out, "$2" . "\n");
+        closef($out);
+    }
+}
